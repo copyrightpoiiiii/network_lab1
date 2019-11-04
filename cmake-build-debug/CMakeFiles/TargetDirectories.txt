@@ -1,0 +1,3 @@
+/Users/zhangqi/CLionProjects/network_lab1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/zhangqi/CLionProjects/network_lab1/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/zhangqi/CLionProjects/network_lab1/cmake-build-debug/CMakeFiles/network_lab1.dir

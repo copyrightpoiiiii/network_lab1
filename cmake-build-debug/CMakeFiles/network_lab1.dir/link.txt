@@ -1,0 +1,1 @@
+/usr/bin/c++  -g -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/network_lab1.dir/main.cpp.o CMakeFiles/network_lab1.dir/dealConnect.cpp.o  -o network_lab1 
