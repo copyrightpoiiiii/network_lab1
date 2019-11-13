@@ -86,13 +86,16 @@
 		<Unit filename="/Users/zhangqi/CLionProjects/network_lab1/dealConnect.h">
 			<Option target="network_lab1"/>
 		</Unit>
+		<Unit filename="/Users/zhangqi/CLionProjects/network_lab1/epoll.hpp">
+			<Option target="network_lab1"/>
+		</Unit>
 		<Unit filename="/Users/zhangqi/CLionProjects/network_lab1/main.cpp">
 			<Option target="network_lab1"/>
 		</Unit>
-		<Unit filename="/Users/zhangqi/CLionProjects/network_lab1/web_connect.h">
+		<Unit filename="/Users/zhangqi/CLionProjects/network_lab1/webConnect.hpp">
 			<Option target="network_lab1"/>
 		</Unit>
-		<Unit filename="/Users/zhangqi/CLionProjects/network_lab1/web_mes.hpp">
+		<Unit filename="/Users/zhangqi/CLionProjects/network_lab1/webMes.hpp">
 			<Option target="network_lab1"/>
 		</Unit>
 		<Unit filename="/Users/zhangqi/CLionProjects/network_lab1/CMakeLists.txt">

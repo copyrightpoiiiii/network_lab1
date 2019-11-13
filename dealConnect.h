@@ -8,15 +8,22 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/unistd.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/event.h>
+#include <cerrno>
+#include <netinet/in.h>
+#include <zconf.h>
+#include <sys/stat.h>
 #include <netinet/in.h>
 #include <fstream>
 #include <iostream>
 
-#define debug
+#define DEBUG
 
-const int BUFFSIZE = 1024;
-const int MAXLINK = 10;
-const int DEFAULT_PORT = 8080;
+const int buffsize = 1024;
+const int maxlink = 10;
+const int defaultPort = 8888;
 
 
 #endif //NETWORK_LAB1_DEALCONNECT_H
