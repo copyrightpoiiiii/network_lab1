@@ -112,9 +112,9 @@ int webConnect::service () {
 			perror ("error:cannot accept connect query");
 			return -5;
 		} else {
-			webMes recData;
-			recData.readRequest (connectFd);
-			bool rec = recData.handleRequest (connectFd);
+			webMes recData (connectFd);
+			recData.readRequest ();
+			bool rec = recData.handleRequest ();
 		}
 	}
 }

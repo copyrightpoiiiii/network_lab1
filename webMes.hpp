@@ -59,6 +59,7 @@ private:
 	char *host;
 	char requestHeadBuf[2000];
 	char *serverPath;
+	int connectFd;
 public:
 
 	char *version;
@@ -68,6 +69,17 @@ public:
 	int httpLen;
 
 	webMes () {
+		memset (buffer, 0, sizeof (buffer));
+		memset (postBuf, 0, sizeof (postBuf));
+		len = readCount = index = 0;
+		bufLen = sizeof (buffer);
+		status = Request;
+		method = requestFile = version = nullptr;
+		serverPath = getcwd (nullptr, 0);
+	}
+
+	webMes (int inFd) {
+		connectFd = inFd;
 		memset (buffer, 0, sizeof (buffer));
 		memset (postBuf, 0, sizeof (postBuf));
 		len = readCount = index = 0;
@@ -103,13 +115,13 @@ private:
 	bool requestNotFound();
 	 */
 
-	bool sendFile (int connectFd);
+	bool sendFile ();
 
-	bool sendPicture (int connectFd);
+	bool sendPicture ();
 
-	bool sendHtml (int connectFd);
+	bool sendHtml ();
 
-	bool sendMoive (int connectFd);
+	bool sendMoive ();
 
 public:
 
@@ -121,14 +133,14 @@ public:
 		return sizeof (buffer);
 	}
 
-	int readRequest (int connectFd);
+	int readRequest ();
 
-	bool handleRequest (int connectFd);
+	bool handleRequest ();
 
 };
 
 
-int webMes::readRequest (int connectFd) {
+int webMes::readRequest () {
 	memset (buffer, 0, sizeof (buffer));
 	int ret = recv (connectFd, buffer + readCount, bufSize - readCount, 0);//阻塞模式下读入
 	if (ret < 0 && !(errno == EINTR || errno == EWOULDBLOCK || errno == EAGAIN))
@@ -290,7 +302,7 @@ webMes::httpCode webMes::doPost () {
 	return PostFile;
 }
 
-bool webMes::handleRequest (int connectFd) {
+bool webMes::handleRequest () {
 	requestState = analyseRequest ();
 	switch (requestState) {
 		case FileRequest: {
@@ -298,7 +310,7 @@ bool webMes::handleRequest (int connectFd) {
 			std::cout << "start send" << std::endl;
 #endif
 			requestOk ();
-			bool rec = sendFile (connectFd);
+			bool rec = sendFile ();
 			return rec;
 		}
 		case PostFile: {
@@ -310,21 +322,21 @@ bool webMes::handleRequest (int connectFd) {
 	}
 }
 
-bool webMes::sendFile (int connectFd) {
+bool webMes::sendFile () {
 	if (strstr (filename, ".jpg") != nullptr) {
 #ifdef DEBUG
 		std::cout << "picture: " << filename << std::endl;
 #endif
-		return sendPicture (connectFd);
+		return sendPicture ();
 	} else if (strstr (filename, ".mp4") != nullptr) {
 #ifdef DEBUG
 		std::cout << "movie: " << filename << std::endl;
 #endif
-		return sendMoive (connectFd);
-	} else return sendHtml (connectFd);
+		return sendMoive ();
+	} else return sendHtml ();
 }
 
-bool webMes::sendPicture (int connectFd) {
+bool webMes::sendPicture () {
 	sprintf (requestHeadBuf,
 	         "HTTP/1.1 200 ok\r\nContent-Type: image/jpeg\r\nConnection: Keep-Alive\r\ncontent-length:%d\r\n\r\n",
 	         fileSize);
@@ -350,7 +362,7 @@ bool webMes::sendPicture (int connectFd) {
 	return true;
 }
 
-bool webMes::sendHtml (int connectFd) {
+bool webMes::sendHtml () {
 	memset (requestHeadBuf, 0, sizeof (requestHeadBuf));
 	sprintf (requestHeadBuf, "HTTP/1.1 200 ok\r\nConnection: close\r\ncontent-length:%d\r\n\r\n", fileSize);
 	std::ifstream fileRequest (filename, std::ifstream::binary);
@@ -369,7 +381,7 @@ bool webMes::sendHtml (int connectFd) {
 	return true;
 }
 
-bool webMes::sendMoive (int connectFd) {
+bool webMes::sendMoive () {
 	memset (requestHeadBuf, 0, sizeof (requestHeadBuf));
 	sprintf (requestHeadBuf,
 	         "HTTP/1.1 200 ok\r\nContent-Type: video/mpeg4\r\nConnection: close\r\ncontent-length:%d\r\n\r\n",
@@ -380,10 +392,17 @@ bool webMes::sendMoive (int connectFd) {
 		fileRequest.close ();
 		return false;
 	}
+	int lastPos = fileRequest.tellg ();
 	while (!fileRequest.eof ()) {
 		fileRequest.read (requestHeadBuf, 1024);
-		write (connectFd, requestHeadBuf, strlen (requestHeadBuf));
+		int nowPos = fileRequest.tellg ();
+		write (connectFd, requestHeadBuf, nowPos - lastPos >= 0 ? nowPos - lastPos : fileSize - lastPos);
+		std::cout << nowPos << std::endl;
+		lastPos = fileRequest.tellg ();
 	}
+#ifdef DEBUG
+	std::cout << "send successful!" << std::endl;
+#endif
 	if (!fileRequest)
 		return false;
 	fileRequest.close ();
