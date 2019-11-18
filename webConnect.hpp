@@ -113,17 +113,8 @@ int webConnect::service () {
 			return -5;
 		} else {
 			webMes recData;
-#ifdef DEBUG
-			std::cout << "let's read" << std::endl;
-#endif
 			recData.readRequest (connectFd);
-#ifdef DEBUG
-			std::cout << "successful read" << std::endl;
-#endif
 			bool rec = recData.handleRequest (connectFd);
-#ifdef DEBUG
-			std::cout << "successful send" << std::endl;
-#endif
 		}
 	}
 }
