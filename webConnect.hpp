@@ -100,7 +100,7 @@ int webConnect::creatBind () {
 }
 
 int webConnect::startListen () {
-	return listen (socketFd, maxlink);
+	return listen (socketFd, maxLink);
 }
 
 int webConnect::service () {
@@ -120,7 +120,10 @@ int webConnect::service () {
 #ifdef DEBUG
 			std::cout << "successful read" << std::endl;
 #endif
-			bool rec = recData.handleRequest ();
+			bool rec = recData.handleRequest (connectFd);
+#ifdef DEBUG
+			std::cout << "successful send" << std::endl;
+#endif
 		}
 	}
 }

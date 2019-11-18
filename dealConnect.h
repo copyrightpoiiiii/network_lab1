@@ -21,8 +21,8 @@
 
 #define DEBUG
 
-const int buffsize = 1024;
-const int maxlink = 10;
+const int buffSize = 1024;
+const int maxLink = 10;
 const int defaultPort = 8888;
 
 

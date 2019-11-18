@@ -58,6 +58,7 @@ private:
 	int fileSize;
 	char *host;
 	char requestHeadBuf[2000];
+	char *serverPath;
 public:
 
 	char *version;
@@ -73,6 +74,7 @@ public:
 		bufLen = sizeof (buffer);
 		status = Request;
 		method = requestFile = version = nullptr;
+		serverPath = getcwd (nullptr, 0);
 	}
 
 private:
@@ -91,7 +93,17 @@ private:
 
 	httpCode analyseRequest ();
 
-	bool sendFile ();
+	bool requestOk ();
+
+	/*
+	bool requestBadRequest();
+
+	bool requestForbidden();
+
+	bool requestNotFound();
+	 */
+
+	bool sendFile (int connectFd);
 
 public:
 
@@ -105,7 +117,7 @@ public:
 
 	int readRequest (int connectFd);
 
-	bool handleRequest ();
+	bool handleRequest (int connectFd);
 
 };
 
@@ -234,8 +246,10 @@ webMes::httpCode webMes::analyseHeadLine (char *buf) {
 }
 
 webMes::httpCode webMes::doGet () {
-	char *serverPath;
-	serverPath = getcwd (nullptr, 0);
+#ifdef DEBUG
+	std::cout << filename << std::endl;
+	std::cout << serverPath << std::endl;
+#endif
 	char *ch = strchr (requestFile, (int) '?');
 	if (ch) {
 		argv = ch + 1;
@@ -276,11 +290,15 @@ webMes::httpCode webMes::doPost () {
 	return PostFile;
 }
 
-bool webMes::handleRequest () {
+bool webMes::handleRequest (int connectFd) {
 	requestState = analyseRequest ();
 	switch (requestState) {
 		case FileRequest: {
-			bool rec = sendFile ();
+#ifdef DEBUG
+			std::cout << "start send" << std::endl;
+#endif
+			requestOk ();
+			bool rec = sendFile (connectFd);
 			return rec;
 		}
 		case PostFile: {
@@ -292,12 +310,33 @@ bool webMes::handleRequest () {
 	}
 }
 
-bool webMes::sendFile () {
+bool webMes::sendFile (int connectFd) {
 	memset (requestHeadBuf, 0, sizeof (requestHeadBuf));
 	sprintf (requestHeadBuf, "HTTP/1.1 200 ok\r\nConnection: close\r\ncontent-length:%d\r\n\r\n", fileSize);
-	int fileRequest = open (filename, O_RDONLY);
-	int ret = write ()
-	return false;
+	std::ifstream fileRequest (filename, std::ifstream::binary);
+	int ret = write (connectFd, requestHeadBuf, strlen (requestHeadBuf));
+	if (ret < 0) {
+		fileRequest.close ();
+		return false;
+	}
+	while (!fileRequest.eof ()) {
+		fileRequest.read (requestHeadBuf, 1024);
+		write (connectFd, requestHeadBuf, strlen (requestHeadBuf));
+	}
+	if (!fileRequest)
+		return false;
+	fileRequest.close ();
+	return true;
 }
+
+bool webMes::requestOk () {
+	activeRequest = false;
+	memset (requestHeadBuf, 0, sizeof (requestHeadBuf));
+#ifdef debug
+	std::cout<<"成功请求！"<<std::endl;
+#endif
+	return sprintf (requestHeadBuf, R"(HTTP/1.1 200 ok\r\nConnection: close\r\ncontent-length:%d\r\n\r\n)", fileSize);
+}
+
 
 #endif //NETWORK_LAB1_WEBMES_HPP
