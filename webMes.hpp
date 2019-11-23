@@ -137,6 +137,11 @@ public:
 
 	bool handleRequest ();
 
+	bool badRequest ();
+
+	bool illegalRequest ();
+
+	bool unknownRequest ();
 };
 
 
@@ -274,7 +279,10 @@ webMes::httpCode webMes::doGet () {
 		struct stat fileState;
 		int result = stat (filename, &fileState);
 		if (result != 0) {
-			switch (result) {
+#ifdef DEBUG
+			std::cout << errno << std::endl;
+#endif
+			switch (errno) {
 				case ENOENT:
 					return NotFound;
 				case EINVAL:
@@ -306,10 +314,22 @@ bool webMes::handleRequest () {
 	requestState = analyseRequest ();
 	switch (requestState) {
 		case FileRequest: {
-#ifdef DEBUG
-			std::cout << "start send" << std::endl;
-#endif
 			requestOk ();
+			bool rec = sendFile ();
+			return rec;
+		}
+		case NoRequest: {
+			badRequest ();
+			bool rec = sendFile ();
+			return rec;
+		}
+		case ForbiddenRequest: {
+			illegalRequest ();
+			bool rec = sendFile ();
+			return rec;
+		}
+		case NotFound: {
+			unknownRequest ();
 			bool rec = sendFile ();
 			return rec;
 		}
@@ -412,10 +432,46 @@ bool webMes::sendMoive () {
 bool webMes::requestOk () {
 	activeRequest = false;
 	memset (requestHeadBuf, 0, sizeof (requestHeadBuf));
-#ifdef debug
-	std::cout<<"成功请求！"<<std::endl;
-#endif
 	return sprintf (requestHeadBuf, R"(HTTP/1.1 200 ok\r\nConnection: close\r\ncontent-length:%d\r\n\r\n)", fileSize);
+}
+
+bool webMes::badRequest () {
+	memset (filename, 0, sizeof (filename));
+	strcpy (filename, serverPath);
+	strcat (filename, "/200.html");
+	struct stat returnFile;
+	stat (filename, &returnFile);
+	fileSize = returnFile.st_size;
+	memset (requestHeadBuf, 0, sizeof (requestHeadBuf));
+	sprintf (requestHeadBuf, "HTTP/1.1 400 BAD_REQUESTION\r\nConnection: close\r\ncontent-length:%d\r\n\r\n", fileSize);
+	return true;
+}
+
+bool webMes::illegalRequest () {
+	memset (filename, 0, sizeof (filename));
+	strcpy (filename, serverPath);
+	strcat (filename, "/403.html");
+	struct stat returnFile;
+	stat (filename, &returnFile);
+	fileSize = returnFile.st_size;
+	memset (requestHeadBuf, 0, sizeof (requestHeadBuf));
+	sprintf (requestHeadBuf, "HTTP/1.1 403 FORBIDDEN\r\nConnection: close\r\ncontent-length:%d\r\n\r\n", fileSize);
+	return true;
+}
+
+bool webMes::unknownRequest () {
+	memset (filename, 0, sizeof (filename));
+	strcpy (filename, serverPath);
+	strcat (filename, "/404.html");
+#ifdef DEBUG
+	std::cout << filename << std::endl;
+#endif
+	struct stat returnFile;
+	stat (filename, &returnFile);
+	fileSize = returnFile.st_size;
+	memset (requestHeadBuf, 0, sizeof (requestHeadBuf));
+	sprintf (requestHeadBuf, "HTTP/1.1 404 NOT_FOUND\r\nConnection: close\r\ncontent-length:%d\r\n\r\n", fileSize);
+	return true;
 }
 
 
