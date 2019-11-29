@@ -123,32 +123,18 @@ network_lab1/fast:
 	$(MAKE) -f CMakeFiles/network_lab1.dir/build.make CMakeFiles/network_lab1.dir/build
 .PHONY : network_lab1/fast
 
-dealConnect.o: dealConnect.cpp.o
+#=============================================================================
+# Target rules for targets named network_lab1_autogen
 
-.PHONY : dealConnect.o
+# Build rule for target.
+network_lab1_autogen: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 network_lab1_autogen
+.PHONY : network_lab1_autogen
 
-# target to build an object file
-dealConnect.cpp.o:
-	$(MAKE) -f CMakeFiles/network_lab1.dir/build.make CMakeFiles/network_lab1.dir/dealConnect.cpp.o
-.PHONY : dealConnect.cpp.o
-
-dealConnect.i: dealConnect.cpp.i
-
-.PHONY : dealConnect.i
-
-# target to preprocess a source file
-dealConnect.cpp.i:
-	$(MAKE) -f CMakeFiles/network_lab1.dir/build.make CMakeFiles/network_lab1.dir/dealConnect.cpp.i
-.PHONY : dealConnect.cpp.i
-
-dealConnect.s: dealConnect.cpp.s
-
-.PHONY : dealConnect.s
-
-# target to generate assembly for a file
-dealConnect.cpp.s:
-	$(MAKE) -f CMakeFiles/network_lab1.dir/build.make CMakeFiles/network_lab1.dir/dealConnect.cpp.s
-.PHONY : dealConnect.cpp.s
+# fast build rule for target.
+network_lab1_autogen/fast:
+	$(MAKE) -f CMakeFiles/network_lab1_autogen.dir/build.make CMakeFiles/network_lab1_autogen.dir/build
+.PHONY : network_lab1_autogen/fast
 
 main.o: main.cpp.o
 
@@ -177,6 +163,60 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles/network_lab1.dir/build.make CMakeFiles/network_lab1.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+network_lab1_autogen/mocs_compilation.o: network_lab1_autogen/mocs_compilation.cpp.o
+
+.PHONY : network_lab1_autogen/mocs_compilation.o
+
+# target to build an object file
+network_lab1_autogen/mocs_compilation.cpp.o:
+	$(MAKE) -f CMakeFiles/network_lab1.dir/build.make CMakeFiles/network_lab1.dir/network_lab1_autogen/mocs_compilation.cpp.o
+.PHONY : network_lab1_autogen/mocs_compilation.cpp.o
+
+network_lab1_autogen/mocs_compilation.i: network_lab1_autogen/mocs_compilation.cpp.i
+
+.PHONY : network_lab1_autogen/mocs_compilation.i
+
+# target to preprocess a source file
+network_lab1_autogen/mocs_compilation.cpp.i:
+	$(MAKE) -f CMakeFiles/network_lab1.dir/build.make CMakeFiles/network_lab1.dir/network_lab1_autogen/mocs_compilation.cpp.i
+.PHONY : network_lab1_autogen/mocs_compilation.cpp.i
+
+network_lab1_autogen/mocs_compilation.s: network_lab1_autogen/mocs_compilation.cpp.s
+
+.PHONY : network_lab1_autogen/mocs_compilation.s
+
+# target to generate assembly for a file
+network_lab1_autogen/mocs_compilation.cpp.s:
+	$(MAKE) -f CMakeFiles/network_lab1.dir/build.make CMakeFiles/network_lab1.dir/network_lab1_autogen/mocs_compilation.cpp.s
+.PHONY : network_lab1_autogen/mocs_compilation.cpp.s
+
+widget.o: widget.cpp.o
+
+.PHONY : widget.o
+
+# target to build an object file
+widget.cpp.o:
+	$(MAKE) -f CMakeFiles/network_lab1.dir/build.make CMakeFiles/network_lab1.dir/widget.cpp.o
+.PHONY : widget.cpp.o
+
+widget.i: widget.cpp.i
+
+.PHONY : widget.i
+
+# target to preprocess a source file
+widget.cpp.i:
+	$(MAKE) -f CMakeFiles/network_lab1.dir/build.make CMakeFiles/network_lab1.dir/widget.cpp.i
+.PHONY : widget.cpp.i
+
+widget.s: widget.cpp.s
+
+.PHONY : widget.s
+
+# target to generate assembly for a file
+widget.cpp.s:
+	$(MAKE) -f CMakeFiles/network_lab1.dir/build.make CMakeFiles/network_lab1.dir/widget.cpp.s
+.PHONY : widget.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -186,12 +226,16 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... network_lab1"
-	@echo "... dealConnect.o"
-	@echo "... dealConnect.i"
-	@echo "... dealConnect.s"
+	@echo "... network_lab1_autogen"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... network_lab1_autogen/mocs_compilation.o"
+	@echo "... network_lab1_autogen/mocs_compilation.i"
+	@echo "... network_lab1_autogen/mocs_compilation.s"
+	@echo "... widget.o"
+	@echo "... widget.i"
+	@echo "... widget.s"
 .PHONY : help
 
 

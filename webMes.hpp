@@ -71,10 +71,12 @@ public:
 	webMes () {
 		memset (buffer, 0, sizeof (buffer));
 		memset (postBuf, 0, sizeof (postBuf));
+		memset (filename, 0, sizeof (filename));
+		memset (requestHeadBuf, 0, sizeof (requestHeadBuf));
 		len = readCount = index = 0;
 		bufLen = sizeof (buffer);
 		status = Request;
-		method = requestFile = version = nullptr;
+		method = requestFile = version = host = nullptr;
 		serverPath = getcwd (nullptr, 0);
 	}
 
@@ -82,11 +84,17 @@ public:
 		connectFd = inFd;
 		memset (buffer, 0, sizeof (buffer));
 		memset (postBuf, 0, sizeof (postBuf));
+		memset (filename, 0, sizeof (filename));
+		memset (requestHeadBuf, 0, sizeof (requestHeadBuf));
 		len = readCount = index = 0;
 		bufLen = sizeof (buffer);
 		status = Request;
-		method = requestFile = version = nullptr;
+		method = requestFile = version = host = nullptr;
 		serverPath = getcwd (nullptr, 0);
+	}
+
+	~webMes () {
+
 	}
 
 private:
@@ -142,13 +150,19 @@ public:
 	bool illegalRequest ();
 
 	bool unknownRequest ();
+
+	void close ();
+
+	void init (int inFd) {
+		connectFd = inFd;
+	}
 };
 
 
 int webMes::readRequest () {
 	memset (buffer, 0, sizeof (buffer));
 	int ret = recv (connectFd, buffer + readCount, bufSize - readCount, 0);//阻塞模式下读入
-	if (ret < 0 && !(errno == EINTR || errno == EWOULDBLOCK || errno == EAGAIN))
+	if (ret <= 0)
 		return 0;
 	readCount += ret;
 	strcpy (postBuf, buffer);
@@ -228,7 +242,7 @@ bool webMes::analyseRequestInfo (char *buf) {
 		return false;
 	if (requestFile == nullptr || requestFile[0] != '/')
 		return false;
-	return !(version == nullptr || strcmp (version, "HTTP/1.1") != 0);
+	return !(version == nullptr);
 }
 
 webMes::httpCode webMes::analyseRequestLine (char *buf) {
@@ -241,7 +255,7 @@ webMes::httpCode webMes::analyseRequestLine (char *buf) {
 
 webMes::httpCode webMes::analyseHeadLine (char *buf) {
 #ifdef DEBUG
-	std::cout << "HeadLine: " << buf << std::endl;
+	//std::cout << "HeadLine: " << buf << std::endl;
 #endif
 	if ((*buf) == '\0')
 		return GetRequest;
@@ -334,7 +348,6 @@ bool webMes::handleRequest () {
 			return rec;
 		}
 		case PostFile: {
-
 			return true;
 		}
 		default:
@@ -358,7 +371,7 @@ bool webMes::sendFile () {
 
 bool webMes::sendPicture () {
 	sprintf (requestHeadBuf,
-	         "HTTP/1.1 200 ok\r\nContent-Type: image/jpeg\r\nConnection: Keep-Alive\r\ncontent-length:%d\r\n\r\n",
+	         "HTTP/1.1 200 OK\r\nContent-Type: image/jpeg\r\nConnection: close\r\ncontent-length:%d\r\n\r\n",
 	         fileSize);
 	std::ifstream fileRequest (filename, std::ifstream::binary);
 	int ret = write (connectFd, requestHeadBuf, strlen (requestHeadBuf));
@@ -384,16 +397,20 @@ bool webMes::sendPicture () {
 
 bool webMes::sendHtml () {
 	memset (requestHeadBuf, 0, sizeof (requestHeadBuf));
-	sprintf (requestHeadBuf, "HTTP/1.1 200 ok\r\nConnection: close\r\ncontent-length:%d\r\n\r\n", fileSize);
+	sprintf (requestHeadBuf,
+	         "HTTP/1.1 200 OK\r\nContent-type: text/html\r\nConnection: close\r\ncontent-length:%d\r\n\r\n", fileSize);
 	std::ifstream fileRequest (filename, std::ifstream::binary);
 	int ret = write (connectFd, requestHeadBuf, strlen (requestHeadBuf));
 	if (ret < 0) {
 		fileRequest.close ();
 		return false;
 	}
+	int lastPos = fileRequest.tellg ();
 	while (!fileRequest.eof ()) {
 		fileRequest.read (requestHeadBuf, 1024);
-		write (connectFd, requestHeadBuf, strlen (requestHeadBuf));
+		int nowPos = fileRequest.tellg ();
+		write (connectFd, requestHeadBuf, nowPos - lastPos >= 0 ? nowPos - lastPos : fileSize - lastPos);
+		lastPos = fileRequest.tellg ();
 	}
 	if (!fileRequest)
 		return false;
@@ -472,6 +489,20 @@ bool webMes::unknownRequest () {
 	memset (requestHeadBuf, 0, sizeof (requestHeadBuf));
 	sprintf (requestHeadBuf, "HTTP/1.1 404 NOT_FOUND\r\nConnection: close\r\ncontent-length:%d\r\n\r\n", fileSize);
 	return true;
+}
+
+void webMes::close () {
+	::close (connectFd);
+	connectFd = -1;
+	memset (buffer, 0, sizeof (buffer));
+	memset (postBuf, 0, sizeof (postBuf));
+	memset (filename, 0, sizeof (filename));
+	memset (requestHeadBuf, 0, sizeof (requestHeadBuf));
+	len = readCount = index = 0;
+	bufLen = sizeof (buffer);
+	status = Request;
+	method = requestFile = version = host = nullptr;
+	serverPath = getcwd (nullptr, 0);
 }
 
 

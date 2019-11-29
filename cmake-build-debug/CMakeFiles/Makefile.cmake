@@ -16,6 +16,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.15/Modules/CMakeGenericSystem.cmake"
   "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.15/Modules/CMakeInitializeConfigs.cmake"
   "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.15/Modules/CMakeLanguageInformation.cmake"
+  "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.15/Modules/CMakeParseArguments.cmake"
   "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.15/Modules/CMakeSystemSpecificInformation.cmake"
   "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.15/Modules/CMakeSystemSpecificInitialize.cmake"
   "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.15/Modules/Compiler/AppleClang-C.cmake"
@@ -37,6 +38,36 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.15.3/CMakeCCompiler.cmake"
   "CMakeFiles/3.15.3/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.15.3/CMakeSystem.cmake"
+  "/usr/local/Cellar/qt/5.12.3/lib/cmake/Qt5Core/Qt5CoreConfig.cmake"
+  "/usr/local/Cellar/qt/5.12.3/lib/cmake/Qt5Core/Qt5CoreConfigExtras.cmake"
+  "/usr/local/Cellar/qt/5.12.3/lib/cmake/Qt5Core/Qt5CoreConfigExtrasMkspecDir.cmake"
+  "/usr/local/Cellar/qt/5.12.3/lib/cmake/Qt5Core/Qt5CoreConfigVersion.cmake"
+  "/usr/local/Cellar/qt/5.12.3/lib/cmake/Qt5Core/Qt5CoreMacros.cmake"
+  "/usr/local/Cellar/qt/5.12.3/lib/cmake/Qt5Gui/Qt5GuiConfig.cmake"
+  "/usr/local/Cellar/qt/5.12.3/lib/cmake/Qt5Gui/Qt5GuiConfigExtras.cmake"
+  "/usr/local/Cellar/qt/5.12.3/lib/cmake/Qt5Gui/Qt5GuiConfigVersion.cmake"
+  "/usr/local/Cellar/qt/5.12.3/lib/cmake/Qt5Gui/Qt5Gui_QCocoaIntegrationPlugin.cmake"
+  "/usr/local/Cellar/qt/5.12.3/lib/cmake/Qt5Gui/Qt5Gui_QGifPlugin.cmake"
+  "/usr/local/Cellar/qt/5.12.3/lib/cmake/Qt5Gui/Qt5Gui_QICNSPlugin.cmake"
+  "/usr/local/Cellar/qt/5.12.3/lib/cmake/Qt5Gui/Qt5Gui_QICOPlugin.cmake"
+  "/usr/local/Cellar/qt/5.12.3/lib/cmake/Qt5Gui/Qt5Gui_QJpegPlugin.cmake"
+  "/usr/local/Cellar/qt/5.12.3/lib/cmake/Qt5Gui/Qt5Gui_QMacHeifPlugin.cmake"
+  "/usr/local/Cellar/qt/5.12.3/lib/cmake/Qt5Gui/Qt5Gui_QMacJp2Plugin.cmake"
+  "/usr/local/Cellar/qt/5.12.3/lib/cmake/Qt5Gui/Qt5Gui_QMinimalIntegrationPlugin.cmake"
+  "/usr/local/Cellar/qt/5.12.3/lib/cmake/Qt5Gui/Qt5Gui_QOffscreenIntegrationPlugin.cmake"
+  "/usr/local/Cellar/qt/5.12.3/lib/cmake/Qt5Gui/Qt5Gui_QTgaPlugin.cmake"
+  "/usr/local/Cellar/qt/5.12.3/lib/cmake/Qt5Gui/Qt5Gui_QTiffPlugin.cmake"
+  "/usr/local/Cellar/qt/5.12.3/lib/cmake/Qt5Gui/Qt5Gui_QTuioTouchPlugin.cmake"
+  "/usr/local/Cellar/qt/5.12.3/lib/cmake/Qt5Gui/Qt5Gui_QVirtualKeyboardPlugin.cmake"
+  "/usr/local/Cellar/qt/5.12.3/lib/cmake/Qt5Gui/Qt5Gui_QWbmpPlugin.cmake"
+  "/usr/local/Cellar/qt/5.12.3/lib/cmake/Qt5Gui/Qt5Gui_QWebGLIntegrationPlugin.cmake"
+  "/usr/local/Cellar/qt/5.12.3/lib/cmake/Qt5Gui/Qt5Gui_QWebpPlugin.cmake"
+  "/usr/local/Cellar/qt/5.12.3/lib/cmake/Qt5Gui/Qt5Gui_QXdgDesktopPortalThemePlugin.cmake"
+  "/usr/local/Cellar/qt/5.12.3/lib/cmake/Qt5Widgets/Qt5WidgetsConfig.cmake"
+  "/usr/local/Cellar/qt/5.12.3/lib/cmake/Qt5Widgets/Qt5WidgetsConfigExtras.cmake"
+  "/usr/local/Cellar/qt/5.12.3/lib/cmake/Qt5Widgets/Qt5WidgetsConfigVersion.cmake"
+  "/usr/local/Cellar/qt/5.12.3/lib/cmake/Qt5Widgets/Qt5WidgetsMacros.cmake"
+  "/usr/local/Cellar/qt/5.12.3/lib/cmake/Qt5Widgets/Qt5Widgets_QMacStylePlugin.cmake"
   )
 
 # The corresponding makefile is:
@@ -47,10 +78,12 @@ set(CMAKE_MAKEFILE_OUTPUTS
 
 # Byproducts of CMake generate step:
 set(CMAKE_MAKEFILE_PRODUCTS
+  "CMakeFiles/network_lab1_autogen.dir/AutogenInfo.cmake"
   "CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/network_lab1.dir/DependInfo.cmake"
+  "CMakeFiles/network_lab1_autogen.dir/DependInfo.cmake"
   )
