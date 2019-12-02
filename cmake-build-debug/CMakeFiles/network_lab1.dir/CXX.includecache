@@ -6,18 +6,6 @@
 
 #IncludeRegexTransform: 
 
-/Users/zhangqi/CLionProjects/network_lab1/cmake-build-debug/network_lab1_autogen/EWIEGA46WW/moc_widget.cpp
-../../../widget.h
-/Users/zhangqi/CLionProjects/network_lab1/widget.h
-QtCore/qbytearray.h
--
-QtCore/qmetatype.h
--
-
-/Users/zhangqi/CLionProjects/network_lab1/cmake-build-debug/network_lab1_autogen/mocs_compilation.cpp
-EWIEGA46WW/moc_widget.cpp
-/Users/zhangqi/CLionProjects/network_lab1/cmake-build-debug/network_lab1_autogen/EWIEGA46WW/moc_widget.cpp
-
 /Users/zhangqi/CLionProjects/network_lab1/dealConnect.h
 sys/types.h
 -
@@ -91,12 +79,6 @@ QtCore/qmetatype.h
 /Users/zhangqi/CLionProjects/network_lab1/webMes.hpp
 dealConnect.h
 /Users/zhangqi/CLionProjects/network_lab1/dealConnect.h
-
-/Users/zhangqi/CLionProjects/network_lab1/widget.cpp
-iostream
--
-widget.h
-/Users/zhangqi/CLionProjects/network_lab1/widget.h
 
 /Users/zhangqi/CLionProjects/network_lab1/widget.h
 QWidget

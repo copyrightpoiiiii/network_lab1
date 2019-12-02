@@ -51,6 +51,8 @@ public slots:
 	void slotOutput (const QString &out);
 
 	void slotPort ();
+
+	void change ();
 };
 
 #endif //NETWORK_LAB1_WIDGET_H

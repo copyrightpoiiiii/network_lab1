@@ -14,12 +14,12 @@ class webConnect : public QObject {
 Q_OBJECT
 private:
 	QString outBuf;
-	int socketFd{};/*server socket*/
-	int connectFd{};
+	int socketFd;/*server socket*/
+	int connectFd;
 	int kq{};//kqueue
-	struct kevent newEvent{};
-	struct sockaddr_in serveAddress{};
-	struct kevent events[maxConnect + 5]{};
+	struct kevent newEvent;
+	struct sockaddr_in serveAddress;
+	struct kevent events[maxConnect + 5];
 	struct timespec timeout = {10, 0};
 	webMes *users = new webMes[maxConnect + 5];
 	threadPool<webMes> *pool = new threadPool<webMes>;
@@ -175,6 +175,10 @@ void webConnect::service () {
 					} else {
 						EV_SET (&newEvent, curEvent.ident, EVFILT_READ, EV_DELETE, 0, 0, nullptr);
 						kevent (kq, &newEvent, 1, nullptr, 0, nullptr);
+						outBuf.sprintf ("%s\n", users[eventFd].headLine);
+						emit outSignal (outBuf);
+						outBuf.sprintf ("%s\n", users[eventFd].filename);
+						emit outSignal (outBuf);
 						users[eventFd].close ();
 						outBuf.sprintf ("client %d has quited\n", eventFd);
 						emit outSignal (outBuf);

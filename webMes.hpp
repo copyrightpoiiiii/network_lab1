@@ -49,10 +49,8 @@ private:
 	unsigned len;
 	char buffer[bufSize]{};
 	checkStatus status;
-	httpCode requestState;
 	char postBuf[1035];
 	char filePath[250];
-	char filename[205];
 	char *method;//request function
 	char *requestFile;
 	int fileSize;
@@ -61,7 +59,9 @@ private:
 	char *serverPath;
 	int connectFd;
 public:
-
+	char filename[205];
+	httpCode requestState;
+	char headLine[50];
 	char *version;
 	char *argv;
 	bool alive;
@@ -218,6 +218,7 @@ int webMes::splitByLine (int &ind) {
 }
 
 bool webMes::analyseRequestInfo (char *buf) {
+	sprintf (headLine, "%s", buf);
 	char *now = buf;
 	method = now;
 	while (((*now) != ' ') && ((*now) != '\r'))now++;

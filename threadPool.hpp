@@ -72,14 +72,14 @@ bool threadPool<T>::insertThread (T *request) {
 	}
 	activeQueue.push (request);
 	pthread_mutex_unlock (&queueLocker);
-	sem_post (queueState);
+	//sem_post (queueState);
 	return true;
 }
 
 template<typename T>
 void threadPool<T>::work () {
 	while (!stop) {
-		sem_wait (queueState);
+		//sem_wait (queueState);
 		pthread_mutex_lock (&queueLocker);
 		if (activeQueue.empty ()) {
 			pthread_mutex_unlock (&queueLocker);
