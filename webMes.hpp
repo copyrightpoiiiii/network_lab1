@@ -80,7 +80,8 @@ public:
 		serverPath = getcwd (nullptr, 0);
 	}
 
-	webMes (int inFd) {
+	webMes (int inFd, char *serverpath) {
+		serverPath = serverpath;
 		connectFd = inFd;
 		memset (buffer, 0, sizeof (buffer));
 		memset (postBuf, 0, sizeof (postBuf));
@@ -153,7 +154,8 @@ public:
 
 	void close ();
 
-	void init (int inFd) {
+	void init (int inFd, char *serverpath) {
+		serverPath = serverpath;
 		connectFd = inFd;
 	}
 };

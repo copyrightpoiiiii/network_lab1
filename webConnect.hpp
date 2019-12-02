@@ -68,11 +68,13 @@ private:
 public:
 	webConnect ();
 
-	webConnect (int af, unsigned addr, unsigned short port);
+	webConnect (int af, unsigned addr, unsigned short port, char *serverPath);
 
 	~webConnect () override {
 		closeService ();
 	}
+
+	char *serverpath;
 
 	int preServer (int af, int type, int protocol);
 
@@ -111,7 +113,8 @@ webConnect::webConnect () {
 	serveAddress.sin_port = htons (defaultPort);
 }
 
-webConnect::webConnect (int af, unsigned addr, unsigned short port) {
+webConnect::webConnect (int af, unsigned addr, unsigned short port, char *serverPath) {
+	serverpath = serverPath;
 	memset (&serveAddress, 0, sizeof (serveAddress));
 	serveAddress.sin_family = af;
 	serveAddress.sin_addr.s_addr = htonl (addr);
@@ -163,7 +166,7 @@ void webConnect::service () {
 					}
 					EV_SET (&newEvent, clientFd, EVFILT_READ, EV_ADD, 0, 0, nullptr);
 					kevent (kq, &newEvent, 1, nullptr, 0, nullptr);
-					users[clientFd].init (clientFd);
+					users[clientFd].init (clientFd, serverpath);
 					outBuf.sprintf ("client %d has registered address is: %s : %d\n", clientFd,
 					                inet_ntoa (clientAddress.sin_addr), ntohs(clientAddress.sin_port));
 					emit outSignal (outBuf);
